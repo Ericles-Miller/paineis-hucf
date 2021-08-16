@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>Formulário Processo Seletivo</title>
+  </head>
+  <body>
+  <h1>Ler e obter dados um arquivo JSON</h1>
+<h2>Uso do XMLHttpRequest para obter o conteúdo de um arquivo - Requisição AJAX.</h2>
+<p>O conteúdo está escrito no formato JSON, e pode facilmente ser convertido em um objeto JavaScript.</p>
+<p>Para converter o conteúdo JSON em um objeto JavaScript utilize o método JSON.parse().</p>
+<hr/>
+
+<p id="demo"></p>
+
+<script>
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    var cliente = JSON.parse(this.responseText); 
+    document.getElementById("demo").innerHTML = `
+        <h3>Dados do Cliente</h3>
+        <p>Cadastro: ${new Date(cliente.cadastro)}</p>    
+        <p>Nome: ${cliente.nome}</p> 
+        <p>Idade: ${cliente['idade']} anos</p>
+        <p>Cidade: ${cliente.cidade} - ${cliente.estado}</p>
+        <h4>Pets</h4>    
+        <table>
+            <tr>
+                <th>Animal</th>
+                <th>Nome do Pet</th>
+            </tr>
+            ${pegarPets()}
+        </table>
+        <br/>    
+        <hr/>   
+    `  
+    function pegarPets() { 
+        let petArray = cliente.pets;
+        let textTable = "";
+        for(let i in petArray) {
+                textTable += `
+                    <tr>  
+                        <td>${petArray[i]['animal']}</td>
+                        <td>${petArray[i]['nome']}</td> 
+                    </tr>
+           `                           
+        }         
+        return textTable;
+   }
+  }
+};
+xmlhttp.open("Post", "teste.json", true);
+xmlhttp.send();
+</script>
+</body>
+  </html>
