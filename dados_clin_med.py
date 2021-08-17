@@ -10,13 +10,7 @@ def view_bloco():
     list_agenda_clin_med = []
     connection = mvintegra()
     cursor = connection.cursor()
-    #cursor_secundario = connection.cursor()
 
-    # current_date = datetime.datetime.now()
-    # date = current_date - datetime.timedelta(days = days)
-    # date = date.strftime("%d/%m/%y")
-
-    cont = 0
     select_requests = "select data_do_aviso, nome_paciente, prestador_da_cirurgia,dt_chamada_transf, dt_centro_cirurgico,data_da_cirurgia,dt_entrada_rpa,dt_saida_rpa,centro_Cirurgico from dbamv.vdic_agenda_cirurgia WHERE DT_AVISO >= to_date(SYSDATE) AND DT_AVISO < to_date(SYSDATE+1) AND CENTRO_CIRURGICO = 'CENTRO CIRURGICO'"
     request = cursor.execute(select_requests)
     for requests in cursor.execute(select_requests):
