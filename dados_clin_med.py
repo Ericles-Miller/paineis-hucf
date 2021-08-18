@@ -11,10 +11,22 @@ def view_bloco():
     connection = mvintegra()
     cursor = connection.cursor()
 
-    select_requests = "select data_do_aviso, nome_paciente, prestador_da_cirurgia,dt_chamada_transf, dt_centro_cirurgico,data_da_cirurgia,dt_entrada_rpa,dt_saida_rpa,centro_Cirurgico from dbamv.vdic_agenda_cirurgia WHERE DT_AVISO >= to_date(SYSDATE) AND DT_AVISO < to_date(SYSDATE+1) AND CENTRO_CIRURGICO = 'CENTRO CIRURGICO'"
+    select_requests = f"select DS_LEITO, NM_PACIENTE, NM_PRESTADOR,PRESTA, PRESTAN,DIAS,DT_PREVISTA_ALTA,L_PEDIDO,UL_PEDIDO,P_PEDIDO,\
+        UP_PEDIDO,S_PEDIDO,SU_PEDIDO,RX_SN_PEDIDO,URX_SN_PEDIDO,ED_PEDIDO,UED_PEDIDO,US_PEDIDO, UUS_PEDIDO,TP_SOLICITADO,ECG,UECG,\
+        AVISO,CD_ATENDIMENTO,DT_ALTA_MEDICA,RPA,CD_ATENDIMENTO_PAI,TP_SEXO,PROCL1,PROCL2,PROCL3\
+        from dbamv.vdic_painel "
+        
     request = cursor.execute(select_requests)
+    
     for requests in cursor.execute(select_requests):
-        view_agenda_clin_med = {'data_do_aviso': requests[0], 'nome_paciente': requests[1],'prestador_cirurgia': requests[2], 'dt_chamada_transf': requests[3],'dt_centro_cirurgico': requests[4], 'data_da_cirurgia': requests[5],'dt_entrada_rpa': requests[6], 'dt_saida_rpa': requests[6],'centro_cirurgico': requests[7]}
+        view_agenda_clin_med = {'DS_LEITO':requests[0],' ':request[1],'NM_PRESTADOR':requests[2],'PRESTA':requests[3],
+        'PRESTAN':requests[4],'DIAS':requests[5],'DT_PREVISTA_ALTA':requests[6],'L_PEDIDO':requests[7],'UL_PEDIDO':requests[8],
+        'P_PEDIDO':requests[9],'up_pedido':requests[10],'S_PEDIDO':request[11],'SU_PEDIDO':request[12],'RX_SN_PEDIDO':request[13],
+        'URX_SN_PEDIDO':request[14],'ED_PEDIDO':request[15],'UED_PEDIDO':request[16],'US_PEDIDO':request[17],'UUS_PEDIDO':request[18],
+        'TP_SOLICITADO':request[19],'ECG':request[20],'UECG':request[21],'AVISO':request[22],'CD_ATENDIMENTO':request[23],
+        'DT_ALTA_MEDICA':request[24],'RPA':request[25],'CD_ATENDIMENTO_PAI':request[26],'TP_SEXO':request[27], 
+        'PROCL1':request[28],'PROCL2':request[29],'PROCL3':request[30]}
+        
         list_agenda_clin_med.append(view_agenda_clin_med)
         # end
     connection.commit()
@@ -26,31 +38,8 @@ def receiver_agenda_cli_med():
     nlin = len(list_agenda)
     list_remove = list()
     
-    for i in range(0, nlin):
-        #verificar todos os campos que trabalham com datas se estao vazios
-        a= 0     # irar depois
-
-    nlin = len(list_agenda)
-    list_agenda_cli_med  = []
-    for i in range(0, nlin):
-        if  list_agenda[i]['leito'] and list_agenda[i]['nome_paciente'] and list_agenda[i]['medico'] and list_agenda[i][
-            'tecnico'] and list_agenda[i]['enfermeiro'] and list_agenda[i]['dias'] and list_agenda[i]['alta_prev'] and list_agenda[i]['el'] and list_agenda[i][
-            'ep'] and list_agenda[i]['bs'] and list_agenda[i]['rx'] and list_agenda[i]['ed'] and list_agenda[i]['us'] and list_agenda[
-            i]['pa'] and list_agenda[i]['ecg'] and list_agenda[i]['ac'] and list_agenda[i]['procedimentos']:
-            dict_agenda = dict()
-            dict_agenda['leito']         = list_agenda[i]['leito']
-            dict_agenda['nome_paciente'] = list_agenda[i]['nome_paciente']
-            dict_agenda['medico']        = list_agenda[i]['medico']
-            dict_agenda['tecnico']       = list_agenda[i]['tecnico']
-            dict_agenda['enfermeiro']    = list_agenda[i]['enfermeiro']
-            dict_agenda['el']            = list_agenda[i]['el']
-            dict_agenda['pa']            = list_agenda[i]['pa']
-            dict_agenda['ecg']           = list_agenda[i]['ac']
-            dict_agenda['procedimentos'] = list_agenda[i]['procedimentos']
-            
-            #verwificar condicoes para a efeutacao de salvamento da lista 
-            
-        list_agenda_cli_med.append(dict_agenda)
+    
+        
     #END FOR 
     
     list_agenda_cli_med = sorted(list_agenda_cli_med, key=itemgetter('data_aviso'))  #verificar os dado de data para a efetuacao da ordenacao
