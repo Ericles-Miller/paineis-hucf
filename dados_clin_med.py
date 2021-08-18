@@ -19,13 +19,13 @@ def view_bloco():
     request = cursor.execute(select_requests)
     
     for requests in cursor.execute(select_requests):
-        view_agenda_clin_med = {'DS_LEITO':requests[0],' ':request[1],'NM_PRESTADOR':requests[2],'PRESTA':requests[3],
+        view_agenda_clin_med = {'DS_LEITO':requests[0],'NM_PACIENTE':requests[1],'NM_PRESTADOR':requests[2],'PRESTA':requests[3],
         'PRESTAN':requests[4],'DIAS':requests[5],'DT_PREVISTA_ALTA':requests[6],'L_PEDIDO':requests[7],'UL_PEDIDO':requests[8],
-        'P_PEDIDO':requests[9],'up_pedido':requests[10],'S_PEDIDO':request[11],'SU_PEDIDO':request[12],'RX_SN_PEDIDO':request[13],
-        'URX_SN_PEDIDO':request[14],'ED_PEDIDO':request[15],'UED_PEDIDO':request[16],'US_PEDIDO':request[17],'UUS_PEDIDO':request[18],
-        'TP_SOLICITADO':request[19],'ECG':request[20],'UECG':request[21],'AVISO':request[22],'CD_ATENDIMENTO':request[23],
-        'DT_ALTA_MEDICA':request[24],'RPA':request[25],'CD_ATENDIMENTO_PAI':request[26],'TP_SEXO':request[27], 
-        'PROCL1':request[28],'PROCL2':request[29],'PROCL3':request[30]}
+        'P_PEDIDO':requests[9],'up_pedido':requests[10],'S_PEDIDO':requests[11],'SU_PEDIDO':requests[12],'RX_SN_PEDIDO':requests[13],
+        'URX_SN_PEDIDO':requests[14],'ED_PEDIDO':requests[15],'UED_PEDIDO':requests[16],'US_PEDIDO':requests[17],'UUS_PEDIDO':requests[18],
+        'TP_SOLICITADO':requests[19],'ECG':requests[20],'UECG':requests[21],'AVISO':requests[22],'CD_ATENDIMENTO':requests[23],
+        'DT_ALTA_MEDICA':requests[24],'RPA':requests[25],'CD_ATENDIMENTO_PAI':requests[26],'TP_SEXO':requests[27], 
+        'PROCL1':requests[28],'PROCL2':requests[29],'PROCL3':requests[30]}
         
         list_agenda_clin_med.append(view_agenda_clin_med)
         # end
@@ -36,7 +36,7 @@ def view_bloco():
 def receiver_agenda_cli_med():
     list_agenda = view_bloco()
     nlin = len(list_agenda)
-    list_remove = list()
+    
     
     
         
