@@ -5,7 +5,7 @@ import cx_Oracle
 from connection import mvintegra
 import connection
 from operator import itemgetter
-import numpy as np
+#import numpy as np
 
 def view_bloco():
     list_agenda_clin_med = []
@@ -33,32 +33,31 @@ def view_bloco():
     connection.commit()
     return list_agenda_clin_med
 
-def receiver_agenda_cli_med():
-    list_agenda = view_bloco()
+def Verif_list_date(list_agenda):
+    nlin = len(list_agenda)
     list_leitos_vagos = list()
-    leito_vago = dict()
-    for i in list_agenda[0:]:
+    
+    list_agenda_cli_med = list()
+    for i in range(0, nlin):
         
-        if list_agenda['DS_LEITO'] == 'leito_vago':
+        if list_agenda[i]['NM_PACIENTE'] == 'Leito vago':
             list_leitos_vagos.append(i)
         else:        
             if list_agenda[i]['DIAS'] is None:
                 list_agenda[i]['DIAS'] = 'vazio'
-            else:
-                aux = list_agenda[i]['DIAS'].strftime('%d/%m/%Y %H/%M')
-                list_agenda[i]['DIAS'] = aux
-
+            
             if list_agenda[i]['DT_PREVISTA_ALTA'] is None:
                 list_agenda[i]['DT_PREVISTA_ALTA'] = 'vazio'
-            else:
-                aux = list_agenda[i]['DT_PREVISTA_ALTA'].strftime('%d/%m/%Y %H/%M')
-                list_agenda[i]['DT_PREVISTA_ALTA'] = aux
+            '''else:
+                if type(list_agenda[i]['DT_PREVISTA_ALTA']) != class 'str':
+                    aux = list_agenda[i]['DT_PREVISTA_ALTA'].strftime('%d/%m/%Y')
+                    list_agenda[i]['DT_PREVISTA_ALTA'] = aux'''
 
             if list_agenda[i]['DT_ALTA_MEDICA'] is None:
                 list_agenda[i]['DT_ALTA_MEDICA'] = 'vazio'
-            else:
+            '''else:
                 aux = list_agenda[i]['DT_ALTA_MEDICA'].strftime('%d/%m/%Y %H/%M')
-                list_agenda[i]['DT_ALTA_MEDICA'] = aux
+                list_agenda[i]['DT_ALTA_MEDICA'] = aux'''
 
             if list_agenda[i]['NM_PRESTADOR'] is None:
                 list_agenda[i]['NM_PRESTADOR'] = 'vazio'
@@ -83,10 +82,17 @@ def receiver_agenda_cli_med():
 
             if list_agenda[i]['PROCL3'] is None:
                 list_agenda[i]['PROCL3'] = 'vazio'
+    #np.array(list_agenda)  #verificar
+    return list_agenda, list_leitos_vagos
+
+def receiver_agenda_cli_med():
+    list_agenda = view_bloco()
+    leito_ocupados = dict()
+    list_agenda_cli_med,list_vaga = Verif_list_date()
+    nlin = len(list_agenda_cli_med)
     
-    np.array(list_agenda)  #verificar
-    nlin = len(list_agenda)
-    list_agenda_cli_med = list()
+    for i in range(0,nlin):
+        leito_ocupados['NM_PACIENTE'] = list_agenda[i]['NM_PACIENTE']
     list_agenda_cli_med = sorted(list_agenda_cli_med, key=itemgetter('DS_LEITO'))  #verificar os dado de data para a efetuacao da ordenacao
     manda_gravar(list_agenda_cli_med)
                
