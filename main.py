@@ -12,8 +12,8 @@ def consult_agenda():
         #receiver_agenda_cir()
         #receiver_agenda_obs()
         #receiver_agenda_end()
-
         receiver_agenda_cli_med()
+        
         time.sleep(300) #renova a consulta a cada tres minutos
         os.system("cls")
     

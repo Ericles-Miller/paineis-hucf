@@ -32,17 +32,55 @@ def view_bloco():
     connection.commit()
     return list_agenda_clin_med
 
-
 def receiver_agenda_cli_med():
     list_agenda = view_bloco()
-    nlin = len(list_agenda)
     
-    
-    
+    for i in list_agenda[0:]:
+        if list_agenda[i]['DIAS'] is None:
+            list_agenda[i]['DIAS'] = 'vazio'
+        else:
+            aux = list_agenda[i]['DIAS'].strftime('%d/%m/%Y %H/%M')
+            list_agenda[i]['DIAS'] = aux
         
-    #END FOR 
+        if list_agenda[i]['DT_PREVISTA_ALTA'] is None:
+            list_agenda[i]['DT_PREVISTA_ALTA'] = 'vazio'
+        else:
+            aux = list_agenda[i]['DT_PREVISTA_ALTA'].strftime('%d/%m/%Y %H/%M')
+            list_agenda[i]['DT_PREVISTA_ALTA'] = aux
     
-    list_agenda_cli_med = sorted(list_agenda_cli_med, key=itemgetter('data_aviso'))  #verificar os dado de data para a efetuacao da ordenacao
+        if list_agenda[i]['DT_ALTA_MEDICA'] is None:
+            list_agenda[i]['DT_ALTA_MEDICA'] = 'vazio'
+        else:
+            aux = list_agenda[i]['DT_ALTA_MEDICA'].strftime('%d/%m/%Y %H/%M')
+            list_agenda[i]['DT_ALTA_MEDICA'] = aux
+            
+        if list_agenda[i]['NM_PRESTADOR'] is None:
+            list_agenda[i]['NM_PRESTADOR'] = 'vazio'
+            
+        if list_agenda[i]['PRESTA'] is None:
+            list_agenda[i]['PRESTA'] = 'vazio'
+            
+        if list_agenda[i]['PRESTAN'] is None:
+            list_agenda[i]['PRESTAN'] = 'vazio'
+        
+        if list_agenda[i]['CD_ATENDIMENTO'] is None:
+            list_agenda[i]['CD_ATENDIMENTO'] = 'vazio'
+        
+        if list_agenda[i]['CD_ATENDIMENTO_PAI'] is None:
+            list_agenda[i]['CD_ATENDIMENTO_PAI'] = 'vazio'
+            
+        if list_agenda[i]['PROCL1'] is None:
+            list_agenda[i]['PROCL1'] = 'vazio'
+        
+        if list_agenda[i]['PROCL2'] is None:
+            list_agenda[i]['PROCL2'] = 'vazio'
+            
+        if list_agenda[i]['PROCL3'] is None:
+            list_agenda[i]['PROCL3'] = 'vazio'
+    
+    nlin = len(list_agenda)
+    list_agenda_cli_med = list()
+    list_agenda_cli_med = sorted(list_agenda_cli_med, key=itemgetter('DS_LEITO'))  #verificar os dado de data para a efetuacao da ordenacao
     manda_gravar(list_agenda_cli_med)
                
                
