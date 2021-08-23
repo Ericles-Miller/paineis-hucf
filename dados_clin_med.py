@@ -5,7 +5,7 @@ import cx_Oracle
 from connection import mvintegra
 import connection
 from operator import itemgetter
-#import numpy as np
+import numpy as np
 
 def view_bloco():
     list_agenda_clin_med = []
@@ -81,10 +81,10 @@ def Verif_list_date(list_agenda):
 
             if list_agenda[i]['PROCL3'] is None:
                 list_agenda[i]['PROCL3'] = 'vazio'
-    #np.array(list_agenda)  #verificar
+    np.array(list_agenda)  #verificar
     return list_agenda, list_leitos_vagos
 
-def List_vaga(list_agenda,list_vaga):
+def list_vaga_att(list_agenda,list_vaga):
     nlin = len(list_agenda)
     ncol = len(list_vaga)
     new_list_vaga = ()
@@ -92,13 +92,22 @@ def List_vaga(list_agenda,list_vaga):
         for j in range(0,ncol):
             if i  == list_vaga[j]:
                 new_list_vaga.append(list_agenda[i])
+    
+    for i in range(0,ncol):
+        list_agenda.pop(list_vaga[i])
+    
+    return list_vaga, list_agenda
 
 def receiver_agenda_cli_med():
-    list_agenda = view_bloco()
     leito_ocupados = dict()
-    list_agenda_cli_med,list_vaga = Verif_list_date()
-    nlin = len(list_agenda_cli_med)
+    list_agenda_cli_med =()
+    list_vaga = ()
     
+    list_agenda_cli_med = view_bloco() #verifico o comando do banco retornando os campos 
+    list_agenda_cli_med,list_vaga = Verif_list_date(list_agenda_cli_med)
+    list_vaga, list_agenda_cli_med  =list_vaga_att(list_agenda_cli_med,list_vaga)
+    
+    nlin = len(list_agenda_cli_med)
     for i in range(0,nlin):
         leito_ocupados['NM_PACIENTE']       = list_agenda[i]['NM_PACIENTE']
         leito_ocupados['DS_LEITO']          = list_agenda[i]['DS_LEITO']
@@ -135,16 +144,17 @@ def receiver_agenda_cli_med():
 
         
     list_agenda_cli_med = sorted(list_agenda_cli_med, key=itemgetter('DS_LEITO'))  #verificar os dado de data para a efetuacao da ordenacao
-    manda_gravar(list_agenda_cli_med)
+    list_vaga           = sorted(list_vaga, key=itemgetter('DS_LEITO'))
+    manda_gravar(list_agenda_cli_med,'list_agenda_cli_med.json')
+    manda_gravar(list_vaga,'list_vaga_cli_med.json')
                
                
                
 
 
-def manda_gravar(list_agenda_cirurgica):
-    print(list_agenda_cirurgica)
-    arquivo = 'list_agenda_cli_med.json'
-    grava_em_arquivo(arquivo,list_agenda_cirurgica)
+def manda_gravar(lista,nome_arq):
+    print(lista)
+    grava_em_arquivo(nome_arq,lista)
     
 def grava_em_arquivo(nome_arq,lista):
     with open(nome_arq, 'w', encoding='utf8') as f:
