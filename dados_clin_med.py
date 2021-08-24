@@ -5,7 +5,7 @@ import cx_Oracle
 from connection import mvintegra
 import connection
 from operator import itemgetter
-import numpy as np
+#import numpy as np 
 
 def view_bloco():
     list_agenda_clin_med = []
@@ -81,76 +81,69 @@ def Verif_list_date(list_agenda):
 
             if list_agenda[i]['PROCL3'] is None:
                 list_agenda[i]['PROCL3'] = 'vazio'
-    np.array(list_agenda)  #verificar
+    #np.array(list_agenda)  #verificar
     return list_agenda, list_leitos_vagos
 
 def list_vaga_att(list_agenda,list_vaga):
     nlin = len(list_agenda)
     ncol = len(list_vaga)
-    new_list_vaga = ()
+    new_list_vaga =list()
+    new_list_agenda = []
     for i in range(0, nlin):
-        for j in range(0,ncol):
-            if i  == list_vaga[j]:
-                new_list_vaga.append(list_agenda[i])
+        if list_agenda[i]['NM_PACIENTE'] != 'Leito vago':
+                new_list_agenda.append(list_agenda[i])
+        else:
+             new_list_vaga.append(list_agenda[i])
     
-    for i in range(0,ncol):
-        list_agenda.pop(list_vaga[i])
-    
-    return list_vaga, list_agenda
+    return new_list_vaga, new_list_agenda
 
 def receiver_agenda_cli_med():
+    list_agenda_cli_med =list()
+    list_vaga = list
     leito_ocupados = dict()
-    list_agenda_cli_med =()
-    list_vaga = ()
-    
     list_agenda_cli_med = view_bloco() #verifico o comando do banco retornando os campos 
     list_agenda_cli_med,list_vaga = Verif_list_date(list_agenda_cli_med)
     list_vaga, list_agenda_cli_med  =list_vaga_att(list_agenda_cli_med,list_vaga)
     
     nlin = len(list_agenda_cli_med)
     for i in range(0,nlin):
-        leito_ocupados['NM_PACIENTE']       = list_agenda[i]['NM_PACIENTE']
-        leito_ocupados['DS_LEITO']          = list_agenda[i]['DS_LEITO']
-        leito_ocupados['DIAS']              = list_agenda[i]['DIAS']
-        leito_ocupados['DT_PREVISTA_ALTA']  = list_agenda[i]['DT_PREVISTA_ALTA']
-        leito_ocupados['DT_ALTA_MEDICA']    = list_agenda[i]['DT_ALTA_MEDICA']
-        leito_ocupados['NM_PRESTADOR']      = list_agenda[i]['NM_PRESTADOR']
-        leito_ocupados['PRESTA']            = list_agenda[i]['PRESTA']
-        leito_ocupados['CD_ATENDIMENTO']    = list_agenda[i]['CD_ATENDIMENTO']
-        leito_ocupados['PROCL1']            = list_agenda[i]['PROCL1']
-        leito_ocupados['PROCL2']            = list_agenda[i]['PROCL2']
-        leito_ocupados['PROCL3']            = list_agenda[i]['PROCL3']
-        leito_ocupados['PRESTAN']           = list_agenda[i]['PRESTAN']
-        leito_ocupados['L_PEDIDO']          = list_agenda[i]['L_PEDIDO']
-        leito_ocupados['UL_PEDIDO']         = list_agenda[i]['UL_PEDIDO']
-        leito_ocupados['P_PEDIDO']          = list_agenda[i]['P_PEDIDO']
-        leito_ocupados['UP_PEDIDO']         = list_agenda[i]['UP_PEDIDO']
-        leito_ocupados['S_PEDIDO']          = list_agenda[i]['S_PEDIDO']
-        leito_ocupados['RX_SN_PEDIDO']      = list_agenda[i]['RX_SN_PEDIDO']
-        leito_ocupados['URX_SN_PEDIDO']     = list_agenda[i]['URX_SN_PEDIDO']
-        leito_ocupados['ED_PEDIDO']         = list_agenda[i]['ED_PEDIDO']
-        leito_ocupados['UED_PEDIDO']        = list_agenda[i]['UED_PEDIDO']
-        leito_ocupados['US_PEDIDO']         = list_agenda[i]['US_PEDIDO']
-        leito_ocupados['UUS_PEDIDO']        = list_agenda[i]['UUS_PEDIDO']
-        leito_ocupados['TP_SOLICITADO']     = list_agenda[i]['TP_SOLICITADO']
-        leito_ocupados['ECG']               = list_agenda[i]['ECG']
-        leito_ocupados['UECG']              = list_agenda[i]['UECG']
-        leito_ocupados['AVISO']             = list_agenda[i]['AVISO']
-        leito_ocupados['RPA']               = list_agenda[i]['RPA']
-        leito_ocupados['CD_ATENDIMENTO_PAI']= list_agenda[i]['CD_ATENDIMENTO_PAI']
-        leito_ocupados['TP_SEXO']           = list_agenda[i]['TP_SEXO']
+        leito_ocupados['NM_PACIENTE']       = list_agenda_cli_med[i]['NM_PACIENTE']
+        leito_ocupados['DS_LEITO']          = list_agenda_cli_med[i]['DS_LEITO']
+        leito_ocupados['DIAS']              = list_agenda_cli_med[i]['DIAS']
+        leito_ocupados['DT_PREVISTA_ALTA']  = list_agenda_cli_med[i]['DT_PREVISTA_ALTA']
+        leito_ocupados['DT_ALTA_MEDICA']    = list_agenda_cli_med[i]['DT_ALTA_MEDICA']
+        leito_ocupados['NM_PRESTADOR']      = list_agenda_cli_med[i]['NM_PRESTADOR']
+        leito_ocupados['PRESTA']            = list_agenda_cli_med[i]['PRESTA']
+        leito_ocupados['CD_ATENDIMENTO']    = list_agenda_cli_med[i]['CD_ATENDIMENTO']
+        leito_ocupados['PROCL1']            = list_agenda_cli_med[i]['PROCL1']
+        leito_ocupados['PROCL2']            = list_agenda_cli_med[i]['PROCL2']
+        leito_ocupados['PROCL3']            = list_agenda_cli_med[i]['PROCL3']
+        leito_ocupados['PRESTAN']           = list_agenda_cli_med[i]['PRESTAN']
+        leito_ocupados['L_PEDIDO']          = list_agenda_cli_med[i]['L_PEDIDO']
+        leito_ocupados['UL_PEDIDO']         = list_agenda_cli_med[i]['UL_PEDIDO']
+        leito_ocupados['P_PEDIDO']          = list_agenda_cli_med[i]['P_PEDIDO']
+        leito_ocupados['UP_PEDIDO']         = list_agenda_cli_med[i]['UP_PEDIDO']
+        leito_ocupados['S_PEDIDO']          = list_agenda_cli_med[i]['S_PEDIDO']
+        leito_ocupados['RX_SN_PEDIDO']      = list_agenda_cli_med[i]['RX_SN_PEDIDO']
+        leito_ocupados['URX_SN_PEDIDO']     = list_agenda_cli_med[i]['URX_SN_PEDIDO']
+        leito_ocupados['ED_PEDIDO']         = list_agenda_cli_med[i]['ED_PEDIDO']
+        leito_ocupados['UED_PEDIDO']        = list_agenda_cli_med[i]['UED_PEDIDO']
+        leito_ocupados['US_PEDIDO']         = list_agenda_cli_med[i]['US_PEDIDO']
+        leito_ocupados['UUS_PEDIDO']        = list_agenda_cli_med[i]['UUS_PEDIDO']
+        leito_ocupados['TP_SOLICITADO']     = list_agenda_cli_med[i]['TP_SOLICITADO']
+        leito_ocupados['ECG']               = list_agenda_cli_med[i]['ECG']
+        leito_ocupados['UECG']              = list_agenda_cli_med[i]['UECG']
+        leito_ocupados['AVISO']             = list_agenda_cli_med[i]['AVISO']
+        leito_ocupados['RPA']               = list_agenda_cli_med[i]['RPA']
+        leito_ocupados['CD_ATENDIMENTO_PAI']= list_agenda_cli_med[i]['CD_ATENDIMENTO_PAI']
+        leito_ocupados['TP_SEXO']           = list_agenda_cli_med[i]['TP_SEXO']
         
         list_agenda_cli_med.append(leito_ocupados)    
 
-        
-    list_agenda_cli_med = sorted(list_agenda_cli_med, key=itemgetter('DS_LEITO'))  #verificar os dado de data para a efetuacao da ordenacao
-    list_vaga           = sorted(list_vaga, key=itemgetter('DS_LEITO'))
     manda_gravar(list_agenda_cli_med,'list_agenda_cli_med.json')
     manda_gravar(list_vaga,'list_vaga_cli_med.json')
                
-               
-               
-
+        
 
 def manda_gravar(lista,nome_arq):
     print(lista)
